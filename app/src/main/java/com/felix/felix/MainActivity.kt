@@ -3,7 +3,6 @@ package com.felix.felix
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -20,15 +19,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.felix.felix.ui.components.CategoryCard
+import com.felix.felix.ui.components.OfferCard
 import com.felix.felix.ui.theme.FelixTheme
-import com.felix.felix.ui.components.*
 
 @ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
@@ -43,35 +40,7 @@ class MainActivity : ComponentActivity() {
                         topBar = { TopBar() },
                         bottomBar = { BottomBar() },
                     ) { paddingValues ->
-                        //val toast = Toast.makeText(LocalContext.current, "Hello", Toast.LENGTH_SHORT)
-                        Column(
-                            modifier = Modifier
-                                .padding(paddingValues)
-                                .fillMaxWidth()
-                                .verticalScroll(
-                                    rememberScrollState()
-                                ),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Spacer(modifier = Modifier.height(25.dp))
-                            SearchBar()
-                            Spacer(modifier = Modifier.height(25.dp))
-                            SectionTitle(text = "Categories", onSeeAllClick = {/*TODO: See more*/})
-                            Spacer(modifier = Modifier.height(15.dp))
-                            CategoryRow()
-                            Spacer(modifier = Modifier.height(30.dp))
-                            SectionTitle(text = "Special Offers", onSeeAllClick = {/*TODO: See more*/})
-                            Spacer(modifier = Modifier.height(15.dp))
-
-                            for (i in 0..2) {
-                                OfferCard(
-                                    title = "Air Conditioner Repair",
-                                    price = 3000,
-                                    caption = ""
-                                )
-                                Spacer(modifier = Modifier.height(8.dp))
-                            }
-                        }
+                        HomeFeed(paddingValues = paddingValues)
                     }
                 }
             }
@@ -146,6 +115,31 @@ fun BottomBar() {
 
 @ExperimentalMaterial3Api
 @Composable
+fun HomeFeed(paddingValues: PaddingValues) {
+    Column(
+        modifier = Modifier
+            .padding(paddingValues)
+            .fillMaxWidth()
+            .verticalScroll(
+                rememberScrollState()
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(25.dp))
+        SearchBar()
+        Spacer(modifier = Modifier.height(25.dp))
+        SectionTitle(text = "Categories", onSeeAllClick = {/*TODO: See more*/})
+        Spacer(modifier = Modifier.height(15.dp))
+        CategoryRow()
+        Spacer(modifier = Modifier.height(30.dp))
+        SectionTitle(text = "Special Offers", onSeeAllClick = {/*TODO: See more*/})
+        Spacer(modifier = Modifier.height(15.dp))
+        OfferColumn()
+    }
+}
+
+@ExperimentalMaterial3Api
+@Composable
 fun SearchBar() {
     var text = rememberSaveable{ mutableStateOf("") }
     OutlinedTextField(
@@ -190,6 +184,19 @@ fun CategoryRow() {
         items(itemsList) {
             CategoryCard()
         }
+    }
+}
+
+@ExperimentalMaterial3Api
+@Composable
+fun OfferColumn() {
+    for (i in 0..2) {
+        OfferCard(
+            title = "Air Conditioner Repair",
+            price = 3000,
+            caption = ""
+        )
+        Spacer(modifier = Modifier.height(8.dp))
     }
 }
 
