@@ -1,6 +1,7 @@
 package com.felix.felix
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -31,12 +32,23 @@ import androidx.compose.ui.unit.dp
 import com.felix.felix.ui.components.CategoryCard
 import com.felix.felix.ui.components.OfferCard
 import com.felix.felix.ui.theme.FelixTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ServiceModel()
+
+        var services = ServiceModel()
+        val scope = CoroutineScope(Dispatchers.Main)
+        scope.launch {
+            Log.i("TEST", services.LoadServices().getData().toString())
+            //services list
+        }
+
+
         setContent {
 
             FelixTheme {

@@ -6,6 +6,7 @@ import com.felix.felix.dataAccess.FelixDataAccess
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.delay
 
 class ServiceModel {
 
@@ -38,6 +39,12 @@ class ServiceModel {
 
         override fun onCancelled(error: DatabaseError) {
             Log.i("Error", error.message)
+        }
+
+        suspend fun getData(): MutableList<Service> {
+            delay(1L)
+            Log.i("LIST","$services")
+            return services.toMutableList()
         }
     }
 }
