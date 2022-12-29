@@ -45,7 +45,6 @@ class MainActivity : ComponentActivity() {
             //services list
         }
 
-
         setContent {
 
             FelixTheme {
@@ -89,7 +88,7 @@ fun TopBar() {
 @Composable
 fun BottomBar() {
     val selectedItem = remember { mutableStateOf(0) }
-    val items = listOf("Home", "Starred", "Calendar", "Account")
+    val items = listOf("Home", "Favourites", "Calendar", "Account")
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.primary,
         contentColor = MaterialTheme.colorScheme.onPrimary
@@ -111,7 +110,7 @@ fun BottomBar() {
                             contentDescription = "Home"
                         )
                         "Favourites" -> Icon(
-                            imageVector = Icons.Outlined.Favorite,
+                            imageVector = Icons.Outlined.FavoriteBorder,
                             contentDescription = "Star"
                         )
                         "Calendar" -> Icon(

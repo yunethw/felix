@@ -90,7 +90,7 @@ fun FelixTheme(
     val systemUiController = rememberSystemUiController()
     SideEffect {
         systemUiController.setStatusBarColor(
-            color = if (!useDarkTheme) Color(0xFFDBE4E8) else Color(0xFF40484B)
+            color = if (!useDarkTheme) Color(0xFFFFFBFE) else Color(0xFF1C1B1F)
         )
         //TODO Fix delay in changing status bar colour
     }

@@ -7,12 +7,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -31,7 +33,7 @@ import com.felix.felix.ui.theme.FelixTheme
 
 @ExperimentalMaterial3Api
 @Composable
-fun ServiceDetailsScreen(serviceTitle: String, servicePrice: String, description : String) {
+fun ServiceDetailsScreen(serviceTitle: String, servicePrice: String, description: String) {
     Scaffold(topBar = { ServiceTopBar(serviceTitle) },
         bottomBar = { ServiceBottomBar(servicePrice) }) { paddingValues ->
 
@@ -57,45 +59,45 @@ fun ServiceDetailsScreen(serviceTitle: String, servicePrice: String, description
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Text(
-                    text = serviceTitle,
-                    style = MaterialTheme.typography.headlineMedium
+                    text = serviceTitle, style = MaterialTheme.typography.headlineMedium
                 )
                 Spacer(modifier = Modifier.height(10.dp))
-                Row (
+                Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     IconImage(Icons.Rounded.Star)
-                    Spacer(modifier = Modifier.width(10.dp))
-                    /*TODO: create view model*/
+                    Spacer(modifier = Modifier.width(10.dp))/*TODO: create view model*/
                     Text(text = "4.8")
                     Spacer(modifier = Modifier.width(3.dp))
                     Text(text = "(125 Reviews)", color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 Spacer(modifier = Modifier.height(5.dp))
-                Row (
+                Row(
                     verticalAlignment = Alignment.CenterVertically
-                ) {
-                    //TODO: Must include time icon
+                ) { //TODO: Must include time icon
                     IconImage(Icons.Outlined.Refresh)
-                    Spacer(modifier = Modifier.width(10.dp))
-                    /*TODO: create view model*/
+                    Spacer(modifier = Modifier.width(10.dp))/*TODO: create view model*/
                     Text(text = "60 min")
                 }
                 Spacer(modifier = Modifier.height(5.dp))
-                Row (
+                Row(
                     verticalAlignment = Alignment.CenterVertically
-                ) {
-                    //TODO: Must include dollar icon
+                ) { //TODO: Must include dollar icon
                     IconImage(Icons.Outlined.Info)
                     Spacer(modifier = Modifier.width(10.dp))
-                    Text(text = stringResource(R.string.price, servicePrice), fontWeight = FontWeight.SemiBold)
+                    Text(
+                        text = stringResource(R.string.price, servicePrice),
+                        fontWeight = FontWeight.SemiBold
+                    )
                 }
                 Spacer(modifier = Modifier.height(20.dp))
                 Divider()
                 Spacer(modifier = Modifier.height(10.dp))
-                Text(text = "About Service",
+                Text(
+                    text = "About Service",
                     style = MaterialTheme.typography.titleLarge,
-                    fontSize = 20.sp)
+                    fontSize = 20.sp
+                )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(text = description)
             }
@@ -104,8 +106,7 @@ fun ServiceDetailsScreen(serviceTitle: String, servicePrice: String, description
 }
 
 @Composable
-private fun IconImage(imageVector: ImageVector)
-{
+private fun IconImage(imageVector: ImageVector) {
     Image(
         imageVector = imageVector,
         contentDescription = "Ratiings",
@@ -140,10 +141,14 @@ private fun ServiceTopBar(title: String) {
             )
         }
     }, actions = {
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(
-                imageVector = Icons.Outlined.FavoriteBorder, contentDescription = "Like"
-            )
+        var checked by remember { mutableStateOf(false) }
+        
+        IconToggleButton(checked = checked, onCheckedChange = {checked = it}) {
+            if (checked) {
+                Icon(Icons.Filled.Favorite, contentDescription = "Favourite")
+            } else {
+                Icon(Icons.Outlined.FavoriteBorder, contentDescription = "Not Favourite")
+            }
         }
     })
 }
