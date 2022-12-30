@@ -1,14 +1,17 @@
 package com.felix.felix.ui.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,7 +22,12 @@ import com.felix.felix.ui.theme.FelixTheme
 
 @ExperimentalMaterial3Api
 @Composable
-fun OfferCard(title: String, price: Int, caption: String = "") {
+fun OfferCard(
+    title: String,
+    price: String,
+    caption: String = "",
+    buttonVisible : Boolean = true
+) {
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -36,25 +44,26 @@ fun OfferCard(title: String, price: Int, caption: String = "") {
                     .padding(start = 10.dp, end = 15.dp, top = 5.dp, bottom = 10.dp)
             ) {
                 Column(
-                    modifier = Modifier.height(110.dp)
+                    modifier = if (buttonVisible) Modifier.height(110.dp) else Modifier.fillMaxHeight()
                 ) {
-                    OfferCardTextColumn(title = title, price = price, caption = caption)
+                    OfferCardTextColumn(title = title, price = price, caption = caption, buttonVisible = buttonVisible)
                 }
-                Column(
-                    modifier = Modifier.fillMaxHeight(),
-                    verticalArrangement = Arrangement.Bottom
-                ) {
-                    OutlinedButton(
-                        onClick = { /*TODO*/ },
-                        shape = MaterialTheme.shapes.small,
-                        modifier = Modifier.size(width = 120.dp, height = 40.dp),
-                        contentPadding = PaddingValues(horizontal = 8.dp),
-
+                if(buttonVisible) {
+                    Column(
+                        modifier = Modifier.fillMaxHeight(),
+                        verticalArrangement = Arrangement.Bottom
                     ) {
+                        OutlinedButton(
+                            onClick = { /*TODO*/ },
+                            shape = MaterialTheme.shapes.small,
+                            modifier = Modifier.size(width = 120.dp, height = 40.dp),
+                            contentPadding = PaddingValues(horizontal = 8.dp),
+                        ) {
                         Text(
                             text = "Book Now",
                             textAlign = TextAlign.Center
                         )
+                        }
                     }
                 }
             }
@@ -68,21 +77,8 @@ fun OfferCard(title: String, price: Int, caption: String = "") {
     }
 }
 
-@ExperimentalMaterial3Api
-@Preview
 @Composable
-private fun OfferCardPreview() {
-    FelixTheme {
-        OfferCard(
-            title = "Air Conditioner Repair",
-            price = 3000,
-            caption = ""
-        )
-    }
-}
-
-@Composable
-private fun OfferCardTextColumn(title: String, price: Int, caption: String = "") {
+private fun OfferCardTextColumn(title: String, price: String, caption: String = "", buttonVisible: Boolean = true) {
     Text(
         text = title,
         style = MaterialTheme.typography.titleLarge
@@ -90,16 +86,67 @@ private fun OfferCardTextColumn(title: String, price: Int, caption: String = "")
 
     Spacer(modifier = Modifier.height(3.dp))
 
-    Text(
-        text = "Starting | $price LKR",
-        style = MaterialTheme.typography.bodyLarge
-    )
+    if (buttonVisible) {
+        Text(
+            text = "Starting | $price LKR",
+            style = MaterialTheme.typography.bodyLarge
+        )
 
-    Spacer(modifier = Modifier.height(2.dp))
+        Spacer(modifier = Modifier.height(2.dp))
 
-    Text(
-        text = caption,
-        fontSize = 14.sp,
-        fontWeight = FontWeight.Light
-    )
+        Text(
+            text = caption,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Light
+        )
+    }
+    else {
+        Spacer(modifier = Modifier.height(7.dp))
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) { //TODO: Must include time icon
+            IconBox(Icons.Outlined.Refresh, 40.dp)
+            Spacer(modifier = Modifier.width(10.dp))/*TODO: create view model*/
+            Text(text = "60 min")
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) { //TODO: Must include dollar icon
+            IconBox(Icons.Outlined.Info, 40.dp)
+            Spacer(modifier = Modifier.width(10.dp))
+            Text(
+                text = stringResource(R.string.price, price),
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+    }
+
+}
+
+@ExperimentalMaterial3Api
+@Preview("With button")
+@Composable
+private fun OfferCardPreview1() {
+    FelixTheme {
+        OfferCard(
+            title = "Air Conditioner Repair",
+            price = "3000",
+            caption = "Lorem Ipsum",
+            buttonVisible = false
+        )
+    }
+}
+
+@ExperimentalMaterial3Api
+@Preview("Without button")
+@Composable
+private fun OfferCardPreview2() {
+    FelixTheme {
+        OfferCard(
+            title = "Air Conditioner Repair",
+            price = "3000",
+            caption = "Lorem Ipsum",
+        )
+    }
 }

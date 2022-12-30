@@ -1,10 +1,7 @@
 package com.felix.felix.ui
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
@@ -14,11 +11,8 @@ import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.felix.felix.R
+import com.felix.felix.ui.components.IconBox
 import com.felix.felix.ui.theme.FelixTheme
 
 @ExperimentalMaterial3Api
@@ -65,7 +60,7 @@ fun ServiceDetailsScreen(serviceTitle: String, servicePrice: String, description
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    IconImage(Icons.Rounded.Star)
+                    IconBox(Icons.Rounded.Star, 45.dp)
                     Spacer(modifier = Modifier.width(10.dp))/*TODO: create view model*/
                     Text(text = "4.8")
                     Spacer(modifier = Modifier.width(3.dp))
@@ -75,7 +70,7 @@ fun ServiceDetailsScreen(serviceTitle: String, servicePrice: String, description
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) { //TODO: Must include time icon
-                    IconImage(Icons.Outlined.Refresh)
+                    IconBox(Icons.Outlined.Refresh, 45.dp)
                     Spacer(modifier = Modifier.width(10.dp))/*TODO: create view model*/
                     Text(text = "60 min")
                 }
@@ -83,7 +78,7 @@ fun ServiceDetailsScreen(serviceTitle: String, servicePrice: String, description
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) { //TODO: Must include dollar icon
-                    IconImage(Icons.Outlined.Info)
+                    IconBox(Icons.Outlined.Info, 45.dp)
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
                         text = stringResource(R.string.price, servicePrice),
@@ -103,23 +98,6 @@ fun ServiceDetailsScreen(serviceTitle: String, servicePrice: String, description
             }
         }
     }
-}
-
-@Composable
-private fun IconImage(imageVector: ImageVector) {
-    Image(
-        imageVector = imageVector,
-        contentDescription = "Ratiings",
-        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
-        alignment = Alignment.Center,
-        contentScale = ContentScale.Inside,
-        modifier = Modifier
-            .border(
-                border = BorderStroke(2.dp, MaterialTheme.colorScheme.surfaceVariant),
-                shape = RoundedCornerShape(8.dp)
-            )
-            .size(45.dp)
-    )
 }
 
 @ExperimentalMaterial3Api

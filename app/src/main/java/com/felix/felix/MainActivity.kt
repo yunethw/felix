@@ -208,7 +208,7 @@ fun OfferColumn() {
     for (i in 0..2) {
         OfferCard(
             title = "Air Conditioner Repair",
-            price = 3000,
+            price = "3000",
             caption = ""
         )
         Spacer(modifier = Modifier.height(8.dp))
