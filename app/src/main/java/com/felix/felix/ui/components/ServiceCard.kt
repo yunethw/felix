@@ -9,6 +9,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -22,17 +24,19 @@ import com.felix.felix.ui.theme.FelixTheme
 
 @ExperimentalMaterial3Api
 @Composable
-fun OfferCard(
+fun ServiceCard(
     title: String,
     price: String,
     caption: String = "",
-    buttonVisible : Boolean = true
+    buttonVisible : Boolean = true,
+    shape : Shape = CardDefaults.elevatedShape
 ) {
     ElevatedCard(
+        shape = shape,
         modifier = Modifier
             .fillMaxWidth()
             .height(180.dp)
-            .padding(horizontal = 25.dp, vertical = 5.dp),
+            .padding(horizontal = 25.dp),
         onClick = {/*TODO: On offer card click*/}
     ) {
         Row(
@@ -46,7 +50,7 @@ fun OfferCard(
                 Column(
                     modifier = if (buttonVisible) Modifier.height(110.dp) else Modifier.fillMaxHeight()
                 ) {
-                    OfferCardTextColumn(title = title, price = price, caption = caption, buttonVisible = buttonVisible)
+                    ServiceCardTextColumn(title = title, price = price, caption = caption, buttonVisible = buttonVisible)
                 }
                 if(buttonVisible) {
                     Column(
@@ -78,7 +82,7 @@ fun OfferCard(
 }
 
 @Composable
-private fun OfferCardTextColumn(title: String, price: String, caption: String = "", buttonVisible: Boolean = true) {
+private fun ServiceCardTextColumn(title: String, price: String, caption: String = "", buttonVisible: Boolean = true) {
     Text(
         text = title,
         style = MaterialTheme.typography.titleLarge
@@ -127,9 +131,9 @@ private fun OfferCardTextColumn(title: String, price: String, caption: String = 
 @ExperimentalMaterial3Api
 @Preview("With button")
 @Composable
-private fun OfferCardPreview1() {
+private fun ServiceCardPreview1() {
     FelixTheme {
-        OfferCard(
+        ServiceCard(
             title = "Air Conditioner Repair",
             price = "3000",
             caption = "Lorem Ipsum",
@@ -141,9 +145,9 @@ private fun OfferCardPreview1() {
 @ExperimentalMaterial3Api
 @Preview("Without button")
 @Composable
-private fun OfferCardPreview2() {
+private fun ServiceCardPreview2() {
     FelixTheme {
-        OfferCard(
+        ServiceCard(
             title = "Air Conditioner Repair",
             price = "3000",
             caption = "Lorem Ipsum",

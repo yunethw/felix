@@ -11,7 +11,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
@@ -24,10 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.felix.felix.model.ServiceModel
 import com.felix.felix.ui.components.CategoryCard
-import com.felix.felix.ui.components.OfferCard
+import com.felix.felix.ui.components.ServiceCard
 import com.felix.felix.ui.theme.FelixTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -206,15 +206,28 @@ fun CategoryRow() {
 @Composable
 fun OfferColumn() {
     for (i in 0..2) {
-        OfferCard(
+        ServiceCard(
             title = "Air Conditioner Repair",
             price = "3000",
             caption = ""
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(12.dp))
     }
 }
-
+@ExperimentalMaterial3Api
+@Preview
 @Composable
 fun DefaultPreview() {
+    FelixTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
+        ) {
+            Scaffold(
+                topBar = { TopBar() },
+                bottomBar = { BottomBar() },
+            ) { paddingValues ->
+                HomeFeed(paddingValues = paddingValues)
+            }
+        }
+    }
 }
