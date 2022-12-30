@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -29,8 +30,7 @@ import com.felix.felix.ui.components.OfferCard
 @Composable
 fun BookingScreen(serviceTitle : String, price : String) {
     Scaffold(
-        topBar = { BookingTopBar() },
-        bottomBar = { BookingBottomBar() }
+        topBar = { BookingTopBar() }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -39,9 +39,35 @@ fun BookingScreen(serviceTitle : String, price : String) {
             horizontalAlignment = Alignment.CenterHorizontally)
         {
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             OfferCard(title = serviceTitle, price = price, buttonVisible = false)
 
+        }
+        Column(
+            modifier = Modifier
+                .padding(start = 25.dp, end = 25.dp, top = 10.dp, bottom = 25.dp)
+                .fillMaxHeight()
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            ElevatedButton(
+                onClick = { /*TODO: Confirm booking*/ },
+                shape = MaterialTheme.shapes.small,
+                modifier = Modifier.size(width = 160.dp, height = 45.dp)
+            ) {
+                Row (
+                    Modifier.fillMaxWidth()
+                ){
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Icon(
+                        imageVector = Icons.Rounded.Check,
+                        contentDescription = null
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = "Confirm", fontSize = 18.sp)
+                }
+            }
         }
     }
 }
@@ -65,6 +91,10 @@ private fun BookingTopBar() {
                 Icon(
                     imageVector = Icons.Filled.ArrowBack, contentDescription = "Back"
                 )
+            }
+        }, actions = {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(imageVector = Icons.Outlined.Close, contentDescription = "Cancel")
             }
         }
     )
