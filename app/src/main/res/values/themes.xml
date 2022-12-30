@@ -2,4 +2,13 @@
 <resources>
 
     <style name="Theme.Felix" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="CalenderViewCustom" parent="android:Widget.Material.CalendarView">
+<!--        <item name="android:dateTextAppearance">@color/purple_500</item>-->
+<!--        <item name="monthTextAppearance">@style/TextAppearance.Material.Widget.Calendar.Month</item>-->
+<!--        <item name="weekDayTextAppearance">@style/TextAppearance.Material.Widget.Calendar.DayOfWeek</item>-->
+<!--        <item name="dateTextAppearance">@style/TextAppearance.Material.Widget.Calendar.Day</item>-->
+<!--        <item name="colorAccent"><day selection color></item>-->
+<!--        <item name="colorSurface"><background color></item>-->
+    </style>
 </resources>
