@@ -25,17 +25,20 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.felix.felix.R
+import com.felix.felix.model.BookingUiState
 import com.felix.felix.ui.theme.FelixTheme
+import org.json.JSONObject
 
 @ExperimentalMaterial3Api
 @Composable
 fun ServiceCard(
+    subService: HashMap<String, JSONObject>? = null,
     title: String,
     price: String,
     caption: String = "",
     buttonVisible : Boolean = true,
     shape : Shape = CardDefaults.elevatedShape,
-    onClick : () -> Unit = {}
+    onClick : (HashMap<String, JSONObject>?) -> Unit = {}
 ) {
     ElevatedCard(
         shape = shape,
@@ -43,7 +46,9 @@ fun ServiceCard(
             .fillMaxWidth()
             .height(180.dp)
             .padding(horizontal = 25.dp),
-        onClick = onClick
+        onClick = {
+            onClick(subService)
+        }
     ) {
         Row(
             Modifier.fillMaxHeight()
@@ -64,7 +69,9 @@ fun ServiceCard(
                         verticalArrangement = Arrangement.Bottom
                     ) {
                         OutlinedButton(
-                            onClick = { onClick() },
+                            onClick = {
+                                onClick(subService)
+                            },
                             shape = MaterialTheme.shapes.small,
                             modifier = Modifier.size(width = 120.dp, height = 40.dp),
                             contentPadding = PaddingValues(horizontal = 8.dp),

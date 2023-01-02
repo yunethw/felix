@@ -24,11 +24,14 @@ import androidx.compose.ui.unit.dp
 import com.felix.felix.ui.components.CategoryCard
 import com.felix.felix.ui.components.ServiceCard
 import com.felix.felix.ui.theme.FelixTheme
+import org.json.JSONObject
 
 @ExperimentalMaterial3Api
 @Composable
 fun HomeScreen(
-    onServiceCardClick : () -> Unit = {},
+    onServiceCardClick: (HashMap<String, JSONObject>?) -> Unit = {},
+    subServiceList: List<HashMap<String, JSONObject>>,
+    onCategoryCardClick : () -> Unit = {},
     categoryList : List<Pair<String, String>>
 
 ) {
@@ -58,7 +61,10 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(30.dp))
                 SectionTitle(text = "Special Offers", onSeeAllClick = {/*TODO: See more*/ })
                 Spacer(modifier = Modifier.height(15.dp))
-                OfferColumn(onServiceCardClick)
+                OfferColumn(
+                    subServiceList = subServiceList,
+                    onServiceCardClick = onServiceCardClick
+                )
             }
         }
     }
@@ -208,15 +214,17 @@ fun CategoryRow(
 @ExperimentalMaterial3Api
 @Composable
 fun OfferColumn(
-    onServiceCardClick: () -> Unit
+    subServiceList : List<HashMap<String, JSONObject>>,
+    onServiceCardClick: (HashMap<String, JSONObject>?) -> Unit
 ) {
     for (i in 0..2) {
         ServiceCard(
+            /*TODO: Pass sub service*/
             title = "Air Conditioner Repair",
             price = "3000",
             caption = "Hello Hello"
         ) {
-            onServiceCardClick()
+            onServiceCardClick(it)
         }
         Spacer(modifier = Modifier.height(12.dp))
     }

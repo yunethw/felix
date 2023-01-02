@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.felix.felix.ui.BookingScreen
 import com.felix.felix.ui.HomeScreen
 import com.felix.felix.ui.ServiceDetailsScreen
+import com.felix.felix.viewmodel.BookingViewModel
 import com.felix.felix.viewmodel.HomeViewModel
 
 enum class FelixScreen(val title: String) {
@@ -25,13 +26,16 @@ enum class FelixScreen(val title: String) {
 @ExperimentalMaterial3Api
 @Composable
 fun FelixApp(
-    homeViewModel: HomeViewModel = viewModel()
+    homeViewModel: HomeViewModel = viewModel(),
+    bookingViewModel : BookingViewModel = viewModel()
 ) {
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
 
-
     val categoryState by homeViewModel.categoryState.collectAsState()
+    val subServiceState by homeViewModel.subServiceState.collectAsState()
+    val bookingState by bookingViewModel.bookingState.collectAsState()
+    val selectedSubServiceState by bookingViewModel.selectedSubServiceState.collectAsState()
 
     NavHost(
         navController = navController,
@@ -40,9 +44,12 @@ fun FelixApp(
     ) {
         composable(route = FelixScreen.Start.name) {
             HomeScreen(
-                onServiceCardClick = {
+                onServiceCardClick = {subService ->
+                    bookingViewModel.selectSubService(subService!!)
                     navController.navigate(FelixScreen.ServiceDetail.name)
                 },
+                subServiceList = subServiceState.subServiceList,
+                onCategoryCardClick = {/*TODO*/},
                 categoryList = categoryState.categoryList
             )
         }

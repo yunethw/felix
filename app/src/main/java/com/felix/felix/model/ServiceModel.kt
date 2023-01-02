@@ -27,51 +27,51 @@ class ServiceModel {
         override fun onCancelled(error: DatabaseError) {
             Log.i("Error", error.message)
         }
+    }
 
-        var servicesByCategory = mutableListOf<HashMap<String,JSONObject>>()
+    var servicesByCategory = mutableListOf<HashMap<String,JSONObject>>()
 
-        suspend fun getServicesForCategory(category: String): MutableList<HashMap<String, JSONObject>> {
-            delay(1L)
+    suspend fun getServicesForCategory(category: String): MutableList<HashMap<String, JSONObject>> {
+        delay(1L)
 
-            servicesSnapshotValue.filterNotNull().forEach{ service ->
-                if(service["category"].toString().equals(category)){
-                    servicesByCategory.add(service)
-                }
+        servicesSnapshotValue.filterNotNull().forEach{ service ->
+            if(service["category"].toString().equals(category)){
+                servicesByCategory.add(service)
             }
-            return servicesByCategory.toMutableList()
         }
+        return servicesByCategory.toMutableList()
+    }
 
-        suspend fun getServiceByTitle(title:String): HashMap<String, *>? {
-            delay(1L)
-            servicesSnapshotValue.filterNotNull().forEach{ service ->
-                if(service["title"].toString().equals(title)){
-                    return service
-                }
+    suspend fun getServiceByTitle(title:String): HashMap<String, *>? {
+        delay(1L)
+        servicesSnapshotValue.filterNotNull().forEach{ service ->
+            if(service["title"].toString().equals(title)){
+                return service
             }
-            return null
         }
+        return null
+    }
 
-//        suspend fun getServiceByTitle(title:String): HashMap<String, *>? {
-//            delay(1L)
-//            servicesSnapshotValue.filterNotNull().forEach{ service ->
-//                if(service["title"].toString().equals("Air Conditioner")){
-//                    return service.get("sub-services") as HashMap<String,*>
-//                }
-//            }
-//            return null
-//        }
+    //        suspend fun getServiceByTitle(title:String): HashMap<String, *>? {
+    //            delay(1L)
+    //            servicesSnapshotValue.filterNotNull().forEach{ service ->
+    //                if(service["title"].toString().equals("Air Conditioner")){
+    //                    return service.get("sub-services") as HashMap<String,*>
+    //                }
+    //            }
+    //            return null
+    //        }
 
-//        suspend fun getSubOBJByTitle(title:String){
-//            delay(1L)
-//            servicesSnapshotValue.filterNotNull().forEach { service ->
-//                if ()
-//            }
-//        }
+    //        suspend fun getSubOBJByTitle(title:String){
+    //            delay(1L)
+    //            servicesSnapshotValue.filterNotNull().forEach { service ->
+    //                if ()
+    //            }
+    //        }
 
-        suspend fun getData(): MutableList<HashMap<String, JSONObject>> {
-            delay(1L)
-            Log.i("LIST","$servicesSnapshotValue")
-            return servicesSnapshotValue.toMutableList()
-        }
+    suspend fun getData(): MutableList<HashMap<String, JSONObject>> {
+        delay(1L)
+        Log.i("LIST","$servicesSnapshotValue")
+        return servicesSnapshotValue.toMutableList()
     }
 }

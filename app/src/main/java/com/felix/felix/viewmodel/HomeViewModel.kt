@@ -14,16 +14,21 @@ import org.json.JSONObject
 import java.util.HashMap
 
 class HomeViewModel : ViewModel() {
-    //Data sources
+    // Data source
     var categories = CategoryModel()
 
     // Category list state
     private val _categoryState = MutableStateFlow(HomeUiState.CategoryState())
     val categoryState: StateFlow<HomeUiState.CategoryState> = _categoryState.asStateFlow()
 
+    // Sub Service list state
+    private val _subServiceState = MutableStateFlow(HomeUiState.SubServiceState())
+    val subServiceState: StateFlow<HomeUiState.SubServiceState> = _subServiceState.asStateFlow()
+
     init {
         viewModelScope.launch {
             initializeCategoryList(categories.getData())
+            initializeSubServiceList()
         }
     }
 
@@ -45,5 +50,9 @@ class HomeViewModel : ViewModel() {
         }
 
         Log.i("State Update", categoryState.value.categoryList.toString())
+    }
+
+    fun initializeSubServiceList(list : List<HashMap<String, HashMap<String, JSONObject>>>) {
+
     }
 }
