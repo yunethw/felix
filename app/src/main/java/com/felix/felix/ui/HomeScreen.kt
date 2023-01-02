@@ -28,7 +28,9 @@ import com.felix.felix.ui.theme.FelixTheme
 @ExperimentalMaterial3Api
 @Composable
 fun HomeScreen(
-    onServiceCardClick : () -> Unit = {}
+    onServiceCardClick : () -> Unit = {},
+    categoryList : List<Pair<String, String>>
+
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -52,7 +54,7 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(25.dp))
                 SectionTitle(text = "Categories", onSeeAllClick = {/*TODO: See more*/ })
                 Spacer(modifier = Modifier.height(15.dp))
-                CategoryRow()
+                CategoryRow(categoryList)
                 Spacer(modifier = Modifier.height(30.dp))
                 SectionTitle(text = "Special Offers", onSeeAllClick = {/*TODO: See more*/ })
                 Spacer(modifier = Modifier.height(15.dp))
@@ -183,15 +185,22 @@ fun SectionTitle(text: String, onSeeAllClick: (Int) -> Unit) {
 
 @ExperimentalMaterial3Api
 @Composable
-fun CategoryRow() {
-    val itemsList = (0..5).toList()
+fun CategoryRow(
+    categoryList: List<Pair<String, String>> = listOf(
+        Pair("",""), Pair("",""), Pair("",""), Pair("",""), Pair("",""), Pair("","")
+    )
+) {
 
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 25.dp)
     ) {
-        items(itemsList) {
-            CategoryCard()
+        items(if(categoryList.size < 6) categoryList else categoryList.subList(0, 6)) {pair ->
+            CategoryCard(
+                categoryName = pair.first,
+                categoryImageUrl = pair.second,
+                onClick = {}
+            )
         }
     }
 }
@@ -218,6 +227,6 @@ fun OfferColumn(
 @Composable
 fun DefaultPreview() {
     FelixTheme {
-        HomeScreen()
+//        HomeScreen()
     }
 }

@@ -2,8 +2,10 @@ package com.felix.felix
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -12,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.felix.felix.ui.BookingScreen
 import com.felix.felix.ui.HomeScreen
 import com.felix.felix.ui.ServiceDetailsScreen
+import com.felix.felix.viewmodel.HomeViewModel
 
 enum class FelixScreen(val title: String) {
     Start(title = "Home Screen"),
@@ -21,9 +24,14 @@ enum class FelixScreen(val title: String) {
 
 @ExperimentalMaterial3Api
 @Composable
-fun FelixApp() {
+fun FelixApp(
+    homeViewModel: HomeViewModel = viewModel()
+) {
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
+
+
+    val categoryState by homeViewModel.categoryState.collectAsState()
 
     NavHost(
         navController = navController,
@@ -34,7 +42,8 @@ fun FelixApp() {
             HomeScreen(
                 onServiceCardClick = {
                     navController.navigate(FelixScreen.ServiceDetail.name)
-                }
+                },
+                categoryList = categoryState.categoryList
             )
         }
         
