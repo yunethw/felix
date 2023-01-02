@@ -2,6 +2,7 @@ package com.felix.felix.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Refresh
@@ -9,9 +10,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -19,6 +22,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.felix.felix.R
 import com.felix.felix.ui.theme.FelixTheme
 
@@ -72,11 +77,15 @@ fun ServiceCard(
                     }
                 }
             }
-            Image(
-                painter = painterResource(id = R.drawable.ac_repair),
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data("https://firebasestorage.googleapis.com/v0/b/felix-c50b3.appspot.com/o/felix_services%2F12.jpg?alt=media&token=6c8c617d-a57f-4cbc-8e44-1a5c52079834")
+                    .crossfade(true)
+                    .build(),
+                placeholder = painterResource(R.drawable.ac_repair),
                 contentDescription = null,
-                Modifier.weight(5f),
-                contentScale = ContentScale.FillHeight
+                contentScale = ContentScale.FillHeight,
+                modifier = Modifier.weight(5f)
             )
         }
     }
