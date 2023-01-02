@@ -34,6 +34,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.felix.felix.model.OrderModel
 import com.felix.felix.model.ServiceModel
 import com.felix.felix.ui.components.CategoryCard
 import com.felix.felix.ui.components.OfferCard
@@ -47,6 +48,8 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        OrderModel("Refrigerator",1,"Cleaning",7500F,"2022-03-30","15:00:00")
 
         var services = ServiceModel()
         var categories = CategoryModel()
