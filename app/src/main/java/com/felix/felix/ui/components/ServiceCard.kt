@@ -34,7 +34,8 @@ fun ServiceCard(
     price: String,
     caption: String = "",
     buttonVisible : Boolean = true,
-    shape : Shape = CardDefaults.elevatedShape
+    shape : Shape = CardDefaults.elevatedShape,
+    onClick : () -> Unit = {}
 ) {
     ElevatedCard(
         shape = shape,
@@ -42,7 +43,7 @@ fun ServiceCard(
             .fillMaxWidth()
             .height(180.dp)
             .padding(horizontal = 25.dp),
-        onClick = {/*TODO: On offer card click*/}
+        onClick = onClick
     ) {
         Row(
             Modifier.fillMaxHeight()
@@ -63,7 +64,7 @@ fun ServiceCard(
                         verticalArrangement = Arrangement.Bottom
                     ) {
                         OutlinedButton(
-                            onClick = { /*TODO*/ },
+                            onClick = { onClick() },
                             shape = MaterialTheme.shapes.small,
                             modifier = Modifier.size(width = 120.dp, height = 40.dp),
                             contentPadding = PaddingValues(horizontal = 8.dp),

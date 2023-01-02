@@ -28,9 +28,17 @@ import com.felix.felix.ui.theme.FelixTheme
 
 @ExperimentalMaterial3Api
 @Composable
-fun ServiceDetailsScreen(serviceTitle: String, servicePrice: String, description: String) {
-    Scaffold(topBar = { ServiceTopBar(serviceTitle) },
-        bottomBar = { ServiceBottomBar(servicePrice) }) { paddingValues ->
+fun ServiceDetailsScreen(
+    serviceTitle: String = "Sample Title",
+    servicePrice: String = "0",
+    description: String = "Sample description about the service",
+    onBackButtonClick : () -> Unit,
+    onBookButtonClick : () -> Unit
+) {
+    Scaffold(
+        topBar = { ServiceTopBar(serviceTitle, onBackButtonClick) },
+        bottomBar = { ServiceBottomBar(servicePrice, onBookButtonClick) }
+    ) { paddingValues ->
 
         Column(
             modifier = Modifier
@@ -102,7 +110,7 @@ fun ServiceDetailsScreen(serviceTitle: String, servicePrice: String, description
 
 @ExperimentalMaterial3Api
 @Composable
-private fun ServiceTopBar(title: String) {
+private fun ServiceTopBar(title: String, onBackButtonClick: () -> Unit) {
     TopAppBar(title = {
         Text(
             text = title,
@@ -113,7 +121,7 @@ private fun ServiceTopBar(title: String) {
             maxLines = 1
         )
     }, navigationIcon = {
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(onClick = onBackButtonClick) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack, contentDescription = "Back"
             )
@@ -133,7 +141,7 @@ private fun ServiceTopBar(title: String) {
 
 @ExperimentalMaterial3Api
 @Composable
-private fun ServiceBottomBar(servicePrice: String) {
+private fun ServiceBottomBar(servicePrice: String, onBookButtonClick: () -> Unit) {
     val btnShape = MaterialTheme.shapes.small
 
     BottomAppBar(
@@ -150,7 +158,7 @@ private fun ServiceBottomBar(servicePrice: String) {
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Button(
-                onClick = { /*TODO*/ },
+                onClick = onBookButtonClick,
                 shape = btnShape,
                 modifier = Modifier.size(width = 150.dp, height = 45.dp)
             ) {
@@ -170,7 +178,9 @@ private fun ServiceDetailsScreenPreview() {
         ServiceDetailsScreen(
             "Air Conditioner Repair",
             "3000",
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum"
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum",
+            onBackButtonClick = {},
+            onBookButtonClick = {}
         )
     }
 }
