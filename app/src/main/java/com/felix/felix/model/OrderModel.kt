@@ -3,7 +3,6 @@ package com.felix.felix.model
 import android.util.Log
 import com.felix.felix.dataAccess.FelixDataAccess
 import com.felix.felix.dataClass.Order
-import com.felix.felix.dataClass.Service
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
