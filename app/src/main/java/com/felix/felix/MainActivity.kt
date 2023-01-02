@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        OrderModel("Refrigerator",1,"Cleaning",7500F,"2022-03-30","15:00:00")
+//        OrderModel("Refrigerator",1,"Cleaning",7500F,"2022-03-30","15:00:00")
 
         var services = ServiceModel()
         var categories = CategoryModel()
@@ -93,7 +93,9 @@ class MainActivity : ComponentActivity() {
             //Load all the category objects
             //            Log.i("Categories: ",categories.LoadCategories().getData().toString())
 
-            Log.i("CUSTOMER DATA", customer.LoadCustomer().getData().toString())
+            services.LoadServices().getSubServicesFrontPage()
+//            Log.i("Sub-Services:",services.LoadServices().getSubServicesFrontPage().count().toString())
+//            Log.i("CUSTOMER DATA", customer.LoadCustomer().getData().toString())
 
         }
         setContent {
