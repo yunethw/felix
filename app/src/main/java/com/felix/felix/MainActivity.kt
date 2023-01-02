@@ -13,6 +13,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
@@ -29,6 +30,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import com.felix.felix.model.CategoryModel
 import com.felix.felix.model.CustomerModel
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import com.felix.felix.model.ServiceModel
 import com.felix.felix.ui.components.CategoryCard
 import com.felix.felix.ui.components.OfferCard
 import com.felix.felix.ui.theme.FelixTheme
@@ -100,7 +106,6 @@ class MainActivity : ComponentActivity() {
             Log.i("CUSTOMER DATA", customer.LoadCustomer().getData().toString())
 
         }
-
         setContent {
 
             FelixTheme {
@@ -149,7 +154,7 @@ fun TopBar() {
 @Composable
 fun BottomBar() {
     val selectedItem = remember { mutableStateOf(0) }
-    val items = listOf("Home", "Starred", "Calendar", "Account")
+    val items = listOf("Home", "Favourites", "Calendar", "Account")
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.primary,
         contentColor = MaterialTheme.colorScheme.onPrimary
@@ -170,8 +175,8 @@ fun BottomBar() {
                             imageVector = Icons.Outlined.Home,
                             contentDescription = "Home"
                         )
-                        "Starred" -> Icon(
-                            imageVector = Icons.Outlined.Star,
+                        "Favourites" -> Icon(
+                            imageVector = Icons.Outlined.FavoriteBorder,
                             contentDescription = "Star"
                         )
                         "Calendar" -> Icon(
