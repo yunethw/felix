@@ -1,12 +1,13 @@
 package com.felix.felix.model
 
 import android.util.Log
-import com.felix.felix.dataClass.Service
 import com.felix.felix.dataAccess.FelixDataAccess
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.delay
+import org.json.JSONObject
+
 
 class ServiceModel {
 
@@ -15,36 +16,62 @@ class ServiceModel {
         serviceRef.addValueEventListener(LoadServices())
     }
 
-    var services = mutableListOf<Service>()
-    var serviceProviders = mutableListOf<Int>()
+
+     var servicesSnapshotValue = mutableListOf <HashMap<String,JSONObject>>()
 
     inner class LoadServices : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
-            for (serviceChild in snapshot.children) {
-                for (serviceProvider in serviceChild.child("service_providers").children) {
-                    serviceProviders.add(serviceProvider.value.toString().toInt())
-                }
-                val serviceObj = Service(
-                    serviceChild.child("category").value.toString(),
-                    serviceChild.child("picture").value.toString(),
-                    serviceChild.child("price").value.toString(),
-                    serviceChild.child("service").value.toString(),
-                    serviceProviders.toMutableList()
-                )
-                services.add(serviceObj)
-                serviceProviders.clear()
-            }
-            Log.i("Services", "service: $services")
+            servicesSnapshotValue = snapshot.value as MutableList<HashMap<String, JSONObject>>
         }
 
         override fun onCancelled(error: DatabaseError) {
             Log.i("Error", error.message)
         }
 
-        suspend fun getData(): MutableList<Service> {
+        var servicesByCategory = mutableListOf<HashMap<String,JSONObject>>()
+
+        suspend fun getServicesForCategory(category: String): MutableList<HashMap<String, JSONObject>> {
             delay(1L)
-            Log.i("LIST","$services")
-            return services.toMutableList()
+
+            servicesSnapshotValue.filterNotNull().forEach{ service ->
+                if(service["category"].toString().equals(category)){
+                    servicesByCategory.add(service)
+                }
+            }
+            return servicesByCategory.toMutableList()
+        }
+
+        suspend fun getServiceByTitle(title:String): HashMap<String, *>? {
+            delay(1L)
+            servicesSnapshotValue.filterNotNull().forEach{ service ->
+                if(service["title"].toString().equals(title)){
+                    return service
+                }
+            }
+            return null
+        }
+
+//        suspend fun getServiceByTitle(title:String): HashMap<String, *>? {
+//            delay(1L)
+//            servicesSnapshotValue.filterNotNull().forEach{ service ->
+//                if(service["title"].toString().equals("Air Conditioner")){
+//                    return service.get("sub-services") as HashMap<String,*>
+//                }
+//            }
+//            return null
+//        }
+
+//        suspend fun getSubOBJByTitle(title:String){
+//            delay(1L)
+//            servicesSnapshotValue.filterNotNull().forEach { service ->
+//                if ()
+//            }
+//        }
+
+        suspend fun getData(): MutableList<HashMap<String, JSONObject>> {
+            delay(1L)
+            Log.i("LIST","$servicesSnapshotValue")
+            return servicesSnapshotValue.toMutableList()
         }
     }
 }

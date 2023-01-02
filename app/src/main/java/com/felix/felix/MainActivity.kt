@@ -1,9 +1,11 @@
 package com.felix.felix
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -21,6 +23,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.felix.felix.model.ServiceModel
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
+import com.felix.felix.model.CategoryModel
+import com.felix.felix.model.CustomerModel
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -36,23 +45,76 @@ import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         OrderModel("Refrigerator",1,"Cleaning",7500F,"2022-03-30","15:00:00")
 
         var services = ServiceModel()
+        var categories = CategoryModel()
+        var customer = CustomerModel("mayukhasiriwardena@gmail.com")
         val scope = CoroutineScope(Dispatchers.Main)
         scope.launch {
-            Log.i("TEST", services.LoadServices().getData().toString())
-            //services list
-        }
 
+            //Load Services
+//             Log.i("TEST", services.LoadServices().getData().toString())
+
+            //Get all the Service Title by Category
+//            services.LoadServices().getServicesForCategory("4").forEach { service ->
+//              Log.i("Title for Cat:", service["title"].toString())
+//            }
+
+            //Get all the Services by Category
+            //            Log.i("Services for Category:",
+//                services.LoadServices().getServicesForCategory("4").toString()
+//            )
+
+            //To search for service by title
+//            Log.i(
+//                "Service by Title:",
+//                services.LoadServices().getServiceByTitle("Motorbike")?.entries.toString()
+//            )
+
+            //Sub-services and charges listed for service by title
+//            if (services.LoadServices().getServiceByTitle("Wall Painting")
+//                    ?.get("sub-services") == null
+//            ) {
+//                Log.i(
+//                    "Charges:",
+//                    services.LoadServices().getServiceByTitle("Wall Painting")?.get("charges")
+//                        .toString()
+//                )
+//                val charges = services.LoadServices().getServiceByTitle("Wall Painting")
+//                    ?.get("charges") as HashMap<String, *>
+//                charges.forEach { s, any ->
+//                    Log.i("$s", "$any")
+//                }
+//            } else {
+//                Log.i(
+//                    "Sub-Services:",
+//                    services.LoadServices().getServiceByTitle("Motorbike")?.get("sub-services")
+//                        .toString()
+//                )
+//                val subServices = services.LoadServices().getServiceByTitle("Motorbike")
+//                    ?.get("sub-services") as HashMap<String, *>
+//                subServices.forEach { s, any ->
+//                    Log.i("$s", "$any")
+//                }
+//            }
+
+            //Load all the category objects
+            //            Log.i("Categories: ",categories.LoadCategories().getData().toString())
+
+            Log.i("CUSTOMER DATA", customer.LoadCustomer().getData().toString())
+
+        }
         setContent {
 
             FelixTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
                 ) {
                     Scaffold(
                         topBar = { TopBar() },
@@ -70,8 +132,12 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TopBar() {
     CenterAlignedTopAppBar(
-        title = { Text(text = "Felix",
-            style = MaterialTheme.typography.headlineLarge) },
+        title = {
+            Text(
+                text = "Felix",
+                style = MaterialTheme.typography.headlineLarge
+            )
+        },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
             titleContentColor = MaterialTheme.colorScheme.onSurfaceVariant
@@ -105,9 +171,9 @@ fun BottomBar() {
                     unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
                     selectedTextColor = MaterialTheme.colorScheme.onPrimary
                 ),
-                label = {Text(item)},
+                label = { Text(item) },
                 icon = {
-                    when(item){
+                    when (item) {
                         "Home" -> Icon(
                             imageVector = Icons.Outlined.Home,
                             contentDescription = "Home"
@@ -146,11 +212,11 @@ fun HomeFeed(paddingValues: PaddingValues) {
         Spacer(modifier = Modifier.height(25.dp))
         SearchBar()
         Spacer(modifier = Modifier.height(25.dp))
-        SectionTitle(text = "Categories", onSeeAllClick = {/*TODO: See more*/})
+        SectionTitle(text = "Categories", onSeeAllClick = {/*TODO: See more*/ })
         Spacer(modifier = Modifier.height(15.dp))
         CategoryRow()
         Spacer(modifier = Modifier.height(30.dp))
-        SectionTitle(text = "Special Offers", onSeeAllClick = {/*TODO: See more*/})
+        SectionTitle(text = "Special Offers", onSeeAllClick = {/*TODO: See more*/ })
         Spacer(modifier = Modifier.height(15.dp))
         OfferColumn()
     }
@@ -159,12 +225,22 @@ fun HomeFeed(paddingValues: PaddingValues) {
 @ExperimentalMaterial3Api
 @Composable
 fun SearchBar() {
-    var text = rememberSaveable{ mutableStateOf("") }
+    var text = rememberSaveable { mutableStateOf("") }
     OutlinedTextField(
         value = text.value,
-        onValueChange = { text.value = it},
-        leadingIcon = { Icon(imageVector = Icons.Outlined.Search, contentDescription = "Search icon")},
-        placeholder = { Text(text = "Search for AC service", color = MaterialTheme.colorScheme.secondary)},
+        onValueChange = { text.value = it },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Outlined.Search,
+                contentDescription = "Search icon"
+            )
+        },
+        placeholder = {
+            Text(
+                text = "Search for AC service",
+                color = MaterialTheme.colorScheme.secondary
+            )
+        },
         modifier = Modifier
             .padding(horizontal = 25.dp)
             .fillMaxWidth()
@@ -172,19 +248,24 @@ fun SearchBar() {
 }
 
 @Composable
-fun SectionTitle(text : String, onSeeAllClick: (Int) -> Unit) {
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 25.dp),
+fun SectionTitle(text: String, onSeeAllClick: (Int) -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 25.dp),
         verticalAlignment = Alignment.Bottom
-    ) { Text(
-        text = text,
-        style = MaterialTheme.typography.titleMedium
-    )
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.titleMedium
+        )
         ClickableText(
             text = AnnotatedString(text = "See All"),
             modifier = Modifier.fillMaxWidth(),
-            style = TextStyle(textAlign = TextAlign.End, color = MaterialTheme.colorScheme.onSurfaceVariant),
+            style = TextStyle(
+                textAlign = TextAlign.End,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            ),
             onClick = onSeeAllClick
         )
     }
@@ -221,3 +302,4 @@ fun OfferColumn() {
 @Composable
 fun DefaultPreview() {
 }
+

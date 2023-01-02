@@ -8,10 +8,24 @@ class FelixDataAccess {
         var mydatabase = FirebaseDatabase.getInstance()
         return mydatabase.getReference("services")
     }
-
+    
     fun getOrderRef(): DatabaseReference {
         var mydatabase = FirebaseDatabase.getInstance()
         return mydatabase.getReference("orders")
+        
+    fun getAllRef(): DatabaseReference{
+        var mydatabase = FirebaseDatabase.getInstance()
+        return mydatabase.reference
+    }
+
+    fun getCategoryRef() : DatabaseReference{
+        var mydatabase = FirebaseDatabase.getInstance()
+        return mydatabase.getReference("categories")
+    }
+
+    fun getCustomerRef(): DatabaseReference {
+        var mydatabase = FirebaseDatabase.getInstance()
+        return mydatabase.getReference("customers")
     }
 
 }
