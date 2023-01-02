@@ -1,9 +1,8 @@
 package com.felix.felix.ui
 
 import android.util.Log
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -21,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -29,6 +29,7 @@ import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.felix.felix.R
 import com.felix.felix.ui.components.DatePicker
 import com.felix.felix.ui.theme.FelixTheme
 import com.felix.felix.ui.components.ServiceCard
@@ -44,13 +45,15 @@ fun BookingScreen(serviceTitle: String, price: String) {
         RoundedCornerShape(topStart = 0.dp, topEnd = 0.dp, bottomEnd = 12.dp, bottomStart = 12.dp)
     var locationText by rememberSaveable { mutableStateOf("User location address") }
     var selectedDate by rememberSaveable { mutableStateOf(LocalDate.now()) }
-    var openDateDialog by remember { mutableStateOf(true) }
+    var selectedTime by rememberSaveable { mutableStateOf("8.00 am - 9.00 am") }
+    var openDateDialog by remember { mutableStateOf(false) }
 
     Scaffold(topBar = { BookingTopBar() }) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -120,32 +123,73 @@ fun BookingScreen(serviceTitle: String, price: String) {
                         selectedDate = it
                     }
                 }
-            }
 
-        }
+                Spacer(Modifier.height(25.dp))
 
-        Column(
-            modifier = Modifier
-                .padding(start = 25.dp, end = 25.dp, top = 10.dp, bottom = 25.dp)
-                .fillMaxHeight()
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Bottom
-        ) {
-            ElevatedButton(
-                onClick = { /*TODO: Confirm booking*/ },
-                shape = MaterialTheme.shapes.small,
-                modifier = Modifier.size(width = 160.dp, height = 45.dp)
-            ) {
+                Text(text = "Select time slot", style = MaterialTheme.typography.titleSmall)
+                Spacer(modifier = Modifier.height(3.dp))
+                Text(
+                    text = selectedTime,
+                    style = MaterialTheme.typography.titleLarge
+                )
+                Spacer(modifier = Modifier.height(7.dp))
+
+                TimeColumn()
+
+                Spacer(modifier = Modifier.height(7.dp))
+                Divider()
+                Spacer(modifier = Modifier.height(7.dp))
+                Text(text = "Payment summary", style = MaterialTheme.typography.titleMedium)
+                Spacer(modifier = Modifier.height(7.dp))
+
                 Row(
-                    Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 10.dp)
                 ) {
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Icon(
-                        imageVector = Icons.Rounded.Check, contentDescription = null
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "Confirm", fontSize = 18.sp)
+                    Column(Modifier.weight(1f)) {
+                        Text("Service")
+                        Text("Discount")
+                        Text("Travel")
+                        Text("Tax")
+                        Spacer(modifier = Modifier.height(6.dp))
+                        Text("Total", fontWeight = FontWeight.SemiBold)
+                    }
+                    Column(Modifier.weight(1f), horizontalAlignment = Alignment.End) {
+                        Text(price + .00)
+                        Text("0.00")
+                        Text("300.00")
+                        Text("280.00")
+                        Spacer(modifier = Modifier.height(6.dp))
+                        Text("3580.00", fontWeight = FontWeight.Bold)
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Row(horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(80.dp)
+                ) {
+                    ElevatedButton(
+                        onClick = { /*TODO: Confirm booking*/ },
+                        shape = MaterialTheme.shapes.small,
+                        modifier = Modifier
+                            .size(width = 190.dp, height = 60.dp)
+                            .padding(5.dp)
+                    ) {
+                        Row(
+                            Modifier.fillMaxWidth()
+                        ) {
+                            Spacer(modifier = Modifier.width(13.dp))
+                            Icon(
+                                imageVector = Icons.Rounded.Check, contentDescription = null
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(text = "Confirm", fontSize = 18.sp)
+                        }
+                    }
                 }
             }
         }
@@ -208,6 +252,43 @@ private fun DateRow(onDateClick: (LocalDate) -> Unit, onMoreButtonClick: () -> U
             }
         }
     }
+}
+
+@ExperimentalMaterial3Api
+@Composable
+private fun TimeColumn(startTime: Int = 8) {
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        for (r in 0..2) {
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                for( i in 0..1) {
+                    TimeButton(time = (startTime + r + i))
+                }
+            }
+        }
+    }
+}
+
+@ExperimentalMaterial3Api
+@Composable
+private fun TimeButton(time : Int) {
+    OutlinedButton(
+        onClick = { /*TODO*/ },
+        modifier = Modifier.size(165.dp, 60.dp),
+        shape = MaterialTheme.shapes.small,
+        contentPadding = PaddingValues(horizontal = 2.dp)
+    ) {
+        Text(text = "$time.00 - ${time+1}.00", fontSize = 22.sp, color = MaterialTheme.colorScheme.onSurface)
+    }
+
 }
 
 @ExperimentalMaterial3Api
