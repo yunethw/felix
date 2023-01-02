@@ -86,12 +86,6 @@ fun ServiceCard(
                 contentScale = ContentScale.FillHeight,
                 modifier = Modifier.weight(5f)
             )
-//            Image(
-//                painter = painterResource(id = R.drawable.ac_repair),
-//                contentDescription = null,
-//                Modifier.weight(5f),
-//                contentScale = ContentScale.FillHeight
-//            )
         }
     }
 }
