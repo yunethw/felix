@@ -1,15 +1,12 @@
 package com.felix.felix.ui
 
-import android.util.Log
-import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Place
-import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Place
 import androidx.compose.material.icons.rounded.Check
@@ -18,29 +15,27 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.felix.felix.R
 import com.felix.felix.ui.components.DatePicker
-import com.felix.felix.ui.theme.FelixTheme
 import com.felix.felix.ui.components.ServiceCard
-import java.time.DayOfWeek
+import com.felix.felix.ui.theme.FelixTheme
 import java.time.LocalDate
-import java.time.MonthDay
 import java.time.format.DateTimeFormatter
 
 @ExperimentalMaterial3Api
 @Composable
-fun BookingScreen(serviceTitle: String, price: String) {
+fun BookingScreen(
+    serviceTitle: String,
+    price: String,
+    onBackButtonClick: () -> Unit,
+    onCancelButtonClick: () -> Unit,
+    onConfirmButtonClick: () -> Unit
+) {
     val shape =
         RoundedCornerShape(topStart = 0.dp, topEnd = 0.dp, bottomEnd = 12.dp, bottomStart = 12.dp)
     var locationText by rememberSaveable { mutableStateOf("User location address") }
@@ -48,7 +43,9 @@ fun BookingScreen(serviceTitle: String, price: String) {
     var selectedTime by rememberSaveable { mutableStateOf("8.00 am - 9.00 am") }
     var openDateDialog by remember { mutableStateOf(false) }
 
-    Scaffold(topBar = { BookingTopBar() }) { paddingValues ->
+    Scaffold(
+        topBar = { BookingTopBar(onBackButtonClick, onCancelButtonClick) }
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
@@ -173,7 +170,7 @@ fun BookingScreen(serviceTitle: String, price: String) {
                         .height(80.dp)
                 ) {
                     ElevatedButton(
-                        onClick = { /*TODO: Confirm booking*/ },
+                        onClick =  onConfirmButtonClick,
                         shape = MaterialTheme.shapes.small,
                         modifier = Modifier
                             .size(width = 190.dp, height = 60.dp)
@@ -198,7 +195,7 @@ fun BookingScreen(serviceTitle: String, price: String) {
 
 @ExperimentalMaterial3Api
 @Composable
-private fun BookingTopBar() {
+private fun BookingTopBar(onBackButtonClick: () -> Unit, onCancelButtonClick: () -> Unit) {
     TopAppBar(title = {
         Text(
             text = "Booking Summary",
@@ -209,13 +206,13 @@ private fun BookingTopBar() {
             maxLines = 1
         )
     }, navigationIcon = {
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(onClick = onBackButtonClick) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack, contentDescription = "Back"
             )
         }
     }, actions = {
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(onClick = onCancelButtonClick) {
             Icon(imageVector = Icons.Outlined.Close, contentDescription = "Cancel")
         }
     })
@@ -325,49 +322,12 @@ private fun RadioDateButton(date: LocalDate, onDateClick: (LocalDate) -> Unit) {
     }
 }
 
-
-@ExperimentalMaterial3Api
-@Composable
-private fun BookingBottomBar() {
-    val btnShape = MaterialTheme.shapes.small
-    val btnSize = Modifier.size(width = 150.dp, height = 45.dp)
-
-    BottomAppBar(
-        containerColor = MaterialTheme.colorScheme.surfaceVariant
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            OutlinedButton(
-                onClick = { /*TODO*/ }, shape = btnShape, modifier = btnSize
-            ) {
-                Icon(imageVector = Icons.Outlined.Close, contentDescription = null)
-                Spacer(modifier = Modifier.width(2.dp))
-                Text(
-                    text = "Cancel", fontSize = 16.sp, textAlign = TextAlign.Center
-                )
-            }
-            Button(
-                onClick = { /*TODO*/ }, shape = btnShape, modifier = btnSize
-            ) {
-                Icon(imageVector = Icons.Outlined.Check, contentDescription = null)
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = "Confirm", fontSize = 16.sp, textAlign = TextAlign.Center
-                )
-            }
-        }
-    }
-}
-
 @ExperimentalMaterial3Api
 @Preview
 @Composable
 private fun BookingPreview() {
     FelixTheme {
-        BookingScreen("Air Conditioner Repair", "3000")
+        BookingScreen("Air Conditioner Repair", "3000", {}, {}, {})
     }
 }
 
