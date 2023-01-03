@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -22,22 +23,26 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.felix.felix.R
+import com.felix.felix.model.BookingUiState
+import com.felix.felix.model.HomeUiState
 import com.felix.felix.ui.components.IconBox
 import com.felix.felix.ui.theme.FelixTheme
+import com.felix.felix.viewmodel.BookingViewModel
+import com.felix.felix.viewmodel.HomeViewModel
 
 @ExperimentalMaterial3Api
 @Composable
 fun ServiceDetailsScreen(
-    serviceTitle: String = "Sample Title",
-    servicePrice: String = "0",
-    description: String = "Sample description about the service",
+    selectedSubServiceState: BookingUiState.SelectedSubService,
     onBackButtonClick : () -> Unit,
     onBookButtonClick : () -> Unit
 ) {
     Scaffold(
-        topBar = { ServiceTopBar(serviceTitle, onBackButtonClick) },
-        bottomBar = { ServiceBottomBar(servicePrice, onBookButtonClick) }
+        topBar = { ServiceTopBar(selectedSubServiceState.title, onBackButtonClick) },
+        bottomBar = { ServiceBottomBar(selectedSubServiceState.price, onBookButtonClick) }
     ) { paddingValues ->
 
         Column(
@@ -46,9 +51,13 @@ fun ServiceDetailsScreen(
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ac_repair),
-                contentDescription = "AC Repair",
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(selectedSubServiceState.imageUrl)
+                    .crossfade(true)
+                    .build(),
+                placeholder = painterResource(R.drawable.ac_repair),
+                contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(250.dp),
@@ -62,7 +71,7 @@ fun ServiceDetailsScreen(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Text(
-                    text = serviceTitle, style = MaterialTheme.typography.headlineMedium
+                    text = selectedSubServiceState.title, style = MaterialTheme.typography.headlineMedium
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(
@@ -89,7 +98,7 @@ fun ServiceDetailsScreen(
                     IconBox(Icons.Outlined.Info, 45.dp)
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = stringResource(R.string.price, servicePrice),
+                        text = stringResource(R.string.price, selectedSubServiceState.price),
                         fontWeight = FontWeight.SemiBold
                     )
                 }
@@ -102,7 +111,7 @@ fun ServiceDetailsScreen(
                     fontSize = 20.sp
                 )
                 Spacer(modifier = Modifier.height(2.dp))
-                Text(text = description)
+                Text(text = selectedSubServiceState.description)
             }
         }
     }
@@ -175,13 +184,13 @@ private fun ServiceBottomBar(servicePrice: String, onBookButtonClick: () -> Unit
 @Preview
 private fun ServiceDetailsScreenPreview() {
     FelixTheme {
-        ServiceDetailsScreen(
-            "Air Conditioner Repair",
-            "3000",
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum",
-            onBackButtonClick = {},
-            onBookButtonClick = {}
-        )
+//        ServiceDetailsScreen(
+//            "Air Conditioner Repair",
+//            "3000",
+//            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum",
+//            onBackButtonClick = {},
+//            onBookButtonClick = {}
+//        )
     }
 }
 

@@ -19,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,13 +33,14 @@ import org.json.JSONObject
 @ExperimentalMaterial3Api
 @Composable
 fun ServiceCard(
-    subService: HashMap<String, JSONObject>? = null,
+    subService: HashMap<String, String>? = null,
     title: String,
     price: String,
     caption: String = "",
+    imageUrl : String = "",
     buttonVisible : Boolean = true,
     shape : Shape = CardDefaults.elevatedShape,
-    onClick : (HashMap<String, JSONObject>?) -> Unit = {}
+    onClick : (HashMap<String, String>?) -> Unit = {}
 ) {
     ElevatedCard(
         shape = shape,
@@ -86,10 +88,10 @@ fun ServiceCard(
             }
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data("https://firebasestorage.googleapis.com/v0/b/felix-c50b3.appspot.com/o/felix_services%2F12.jpg?alt=media&token=6c8c617d-a57f-4cbc-8e44-1a5c52079834")
+                    .data(imageUrl)
                     .crossfade(true)
                     .build(),
-                placeholder = painterResource(R.drawable.ac_repair),
+                placeholder = painterResource(R.drawable.ac_repair_service),
                 contentDescription = null,
                 contentScale = ContentScale.FillHeight,
                 modifier = Modifier.weight(5f)
@@ -118,7 +120,9 @@ private fun ServiceCardTextColumn(title: String, price: String, caption: String 
         Text(
             text = caption,
             fontSize = 14.sp,
-            fontWeight = FontWeight.Light
+            fontWeight = FontWeight.Light,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis
         )
     }
     else {

@@ -29,8 +29,8 @@ import org.json.JSONObject
 @ExperimentalMaterial3Api
 @Composable
 fun HomeScreen(
-    onServiceCardClick: (HashMap<String, JSONObject>?) -> Unit = {},
-    subServiceList: List<HashMap<String, JSONObject>>,
+    onServiceCardClick: (HashMap<String, String>?) -> Unit = {},
+    subServiceList: List<HashMap<String, String>>?,
     onCategoryCardClick : () -> Unit = {},
     categoryList : List<Pair<String, String>>
 
@@ -59,7 +59,7 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(15.dp))
                 CategoryRow(categoryList)
                 Spacer(modifier = Modifier.height(30.dp))
-                SectionTitle(text = "Special Offers", onSeeAllClick = {/*TODO: See more*/ })
+                SectionTitle(text = "Popular Services", onSeeAllClick = {/*TODO: See more*/ })
                 Spacer(modifier = Modifier.height(15.dp))
                 OfferColumn(
                     subServiceList = subServiceList,
@@ -214,19 +214,24 @@ fun CategoryRow(
 @ExperimentalMaterial3Api
 @Composable
 fun OfferColumn(
-    subServiceList : List<HashMap<String, JSONObject>>,
-    onServiceCardClick: (HashMap<String, JSONObject>?) -> Unit
+    subServiceList: List<HashMap<String, String>>?,
+    onServiceCardClick: (HashMap<String, String>?) -> Unit
 ) {
-    for (i in 0..2) {
-        ServiceCard(
-            /*TODO: Pass sub service*/
-            title = "Air Conditioner Repair",
-            price = "3000",
-            caption = "Hello Hello"
-        ) {
-            onServiceCardClick(it)
+    val subList = subServiceList?.subList(0, 3)
+
+    if (subList != null) {
+        for (item in subList) {
+            ServiceCard(
+                subService = item,
+                title = item["title"] ?: "",
+                price = item["price"] ?: "0.00",
+                caption = item["description"] ?: "",
+                imageUrl = item["imageUrl"] ?: ""
+            ) {
+                onServiceCardClick(it)
+            }
+            Spacer(modifier = Modifier.height(12.dp))
         }
-        Spacer(modifier = Modifier.height(12.dp))
     }
 }
 

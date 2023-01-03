@@ -11,6 +11,6 @@ class HomeUiState{
     )
 
     data class SubServiceState(
-        val subServiceList: List<HashMap<String, HashMap<String, JSONObject>>>? = null
+        val subServiceList: List<HashMap<String, String>>? = null
     )
 }
