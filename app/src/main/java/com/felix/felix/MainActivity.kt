@@ -90,6 +90,13 @@ class MainActivity : ComponentActivity() {
 //                }
 //            }
 
+            //Load all the category objects
+            //            Log.i("Categories: ",categories.LoadCategories().getData().toString())
+
+            services.LoadServices().getSubServicesFrontPage()
+//            Log.i("Sub-Services:",services.LoadServices().getSubServicesFrontPage().count().toString())
+//            Log.i("CUSTOMER DATA", customer.LoadCustomer().getData().toString())
+
         }
         setContent {
             FelixTheme {

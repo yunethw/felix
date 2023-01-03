@@ -17,7 +17,7 @@ class ServiceModel {
     }
 
 
-     var servicesSnapshotValue = mutableListOf <HashMap<String,JSONObject>>()
+    var servicesSnapshotValue = mutableListOf<HashMap<String, JSONObject>>()
 
     inner class LoadServices : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
@@ -34,21 +34,23 @@ class ServiceModel {
     suspend fun getServicesForCategory(category: String): MutableList<HashMap<String, JSONObject>> {
         delay(1L)
 
-        servicesSnapshotValue.filterNotNull().forEach{ service ->
-            if(service["category"].toString().equals(category)){
+        servicesSnapshotValue.filterNotNull().forEach { service ->
+            if (service["category"].toString().equals(category)) {
                 servicesByCategory.add(service)
             }
         }
+        
         return servicesByCategory.toMutableList()
     }
 
-    suspend fun getServiceByTitle(title:String): HashMap<String, *>? {
+    suspend fun getServiceByTitle(title: String): HashMap<String, *>? {
         delay(1L)
-        servicesSnapshotValue.filterNotNull().forEach{ service ->
-            if(service["title"].toString().equals(title)){
+        servicesSnapshotValue.filterNotNull().forEach { service ->
+            if (service["title"].toString().equals(title)) {
                 return service
             }
         }
+    
         return null
     }
 
@@ -62,16 +64,67 @@ class ServiceModel {
     //            return null
     //        }
 
-    //        suspend fun getSubOBJByTitle(title:String){
-    //            delay(1L)
-    //            servicesSnapshotValue.filterNotNull().forEach { service ->
-    //                if ()
-    //            }
-    //        }
 
-    suspend fun getData(): MutableList<HashMap<String, JSONObject>> {
-        delay(1L)
-        Log.i("LIST","$servicesSnapshotValue")
-        return servicesSnapshotValue.toMutableList()
+        private var servicesWithSubServices = mutableListOf<HashMap<String, HashMap<String, JSONObject>>>()
+
+        private suspend fun getServicesWithSubServices(): MutableList<HashMap<String, HashMap<String, JSONObject>>> {
+            delay(1L)
+            servicesSnapshotValue.filterNotNull().forEach { service ->
+                if (service["sub-services"] != null) {
+                    servicesWithSubServices.add(service as HashMap<String, HashMap<String, JSONObject>>)
+                }
+            }
+            return servicesWithSubServices
+        }
+
+        var randomSingleSubServices = mutableListOf<HashMap<String, HashMap<String, JSONObject>>>()
+
+        suspend fun getSubServicesFrontPage(): MutableList<HashMap<String, HashMap<String, JSONObject>>> {
+            delay(1000L)
+
+            getServicesWithSubServices().forEach { service ->
+                var subServicesAll = service["sub-services"] as HashMap<String, HashMap<String, JSONObject>>
+
+                var keyList = mutableListOf<String>()
+
+                subServicesAll.forEach { (s, _) ->
+                    keyList.add(s)
+                }
+
+                var randomKey = keyList.random()
+
+                var randomSubService = subServicesAll.getValue(randomKey)
+
+                subServicesAll.clear()
+
+                subServicesAll[randomKey] = randomSubService
+
+                service.replace("sub-services", subServicesAll as java.util.HashMap<String, JSONObject>)
+
+//                var finalServices = mutableListOf<HashMap<String,HashMap<String,*>>>()
+//
+//                var keyFilterList = mutableListOf<String>()
+//                service.forEach { (s, hashMap) ->
+//                    if(!keyFilterList.contains(hashMap.keys.toString())){
+//                        keyFilterList.add(hashMap.keys.toString())
+//                        finalServices.add(service)
+//                    }
+//                }
+//                Log.i("Rand SS",keyFilterList.toString())
+
+                randomSingleSubServices.add(service)
+
+//                Log.i("Rand SS", service.toString())
+
+            }
+
+            return randomSingleSubServices
+        }
+
+        suspend fun getData(): MutableList<HashMap<String, JSONObject>> {
+            delay(1L)
+            Log.i("LIST", "$servicesSnapshotValue")
+            return servicesSnapshotValue.toMutableList()
+        }
     }
 }
