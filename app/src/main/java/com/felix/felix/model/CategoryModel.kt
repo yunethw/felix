@@ -31,7 +31,7 @@ class CategoryModel {
     }
 
     suspend fun getData(): List<HashMap<String, JSONObject>> {
-        delay(1000L)
+        delay(2000L)
         //categoriesSnapshot.filterNotNull()
 //        Log.i("LISTC","$categoriesSnapshot")
         return categoriesSnapshot.filterNotNull().toList()

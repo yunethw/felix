@@ -38,7 +38,7 @@ fun CategoryCard(
                     .data(categoryImageUrl)
                     .crossfade(true)
                     .build(),
-                placeholder = painterResource(R.drawable.default_placeholder),
+                placeholder = painterResource(R.drawable.),
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier.fillMaxWidth().height(130.dp)
