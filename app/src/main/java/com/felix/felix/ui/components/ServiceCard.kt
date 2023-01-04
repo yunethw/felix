@@ -91,7 +91,7 @@ fun ServiceCard(
                     .data(imageUrl)
                     .crossfade(true)
                     .build(),
-                placeholder = painterResource(R.drawable.ac_repair_service),
+                placeholder = painterResource(R.drawable.placeholder),
                 contentDescription = null,
                 contentScale = ContentScale.FillHeight,
                 modifier = Modifier.weight(5f)

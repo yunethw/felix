@@ -56,7 +56,7 @@ fun ServiceDetailsScreen(
                     .data(selectedSubServiceState.imageUrl)
                     .crossfade(true)
                     .build(),
-                placeholder = painterResource(R.drawable.ac_repair),
+                placeholder = painterResource(R.drawable.placeholder),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
