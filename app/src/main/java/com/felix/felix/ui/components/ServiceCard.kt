@@ -19,23 +19,28 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.felix.felix.R
+import com.felix.felix.model.BookingUiState
 import com.felix.felix.ui.theme.FelixTheme
+import org.json.JSONObject
 
 @ExperimentalMaterial3Api
 @Composable
 fun ServiceCard(
+    subService: HashMap<String, String>? = null,
     title: String,
     price: String,
     caption: String = "",
+    imageUrl : String = "",
     buttonVisible : Boolean = true,
     shape : Shape = CardDefaults.elevatedShape,
-    onClick : () -> Unit = {}
+    onClick : (HashMap<String, String>?) -> Unit = {}
 ) {
     ElevatedCard(
         shape = shape,
@@ -43,7 +48,9 @@ fun ServiceCard(
             .fillMaxWidth()
             .height(180.dp)
             .padding(horizontal = 25.dp),
-        onClick = onClick
+        onClick = {
+            onClick(subService)
+        }
     ) {
         Row(
             Modifier.fillMaxHeight()
@@ -64,7 +71,9 @@ fun ServiceCard(
                         verticalArrangement = Arrangement.Bottom
                     ) {
                         OutlinedButton(
-                            onClick = { onClick() },
+                            onClick = {
+                                onClick(subService)
+                            },
                             shape = MaterialTheme.shapes.small,
                             modifier = Modifier.size(width = 120.dp, height = 40.dp),
                             contentPadding = PaddingValues(horizontal = 8.dp),
@@ -79,10 +88,10 @@ fun ServiceCard(
             }
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data("https://firebasestorage.googleapis.com/v0/b/felix-c50b3.appspot.com/o/felix_services%2F12.jpg?alt=media&token=6c8c617d-a57f-4cbc-8e44-1a5c52079834")
+                    .data(imageUrl)
                     .crossfade(true)
                     .build(),
-                placeholder = painterResource(R.drawable.ac_repair),
+                placeholder = painterResource(R.drawable.placeholder),
                 contentDescription = null,
                 contentScale = ContentScale.FillHeight,
                 modifier = Modifier.weight(5f)
@@ -111,7 +120,9 @@ private fun ServiceCardTextColumn(title: String, price: String, caption: String 
         Text(
             text = caption,
             fontSize = 14.sp,
-            fontWeight = FontWeight.Light
+            fontWeight = FontWeight.Light,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis
         )
     }
     else {

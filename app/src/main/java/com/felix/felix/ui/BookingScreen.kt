@@ -153,7 +153,7 @@ fun BookingScreen(
                         Text("Total", fontWeight = FontWeight.SemiBold)
                     }
                     Column(Modifier.weight(1f), horizontalAlignment = Alignment.End) {
-                        Text(price + .00)
+                        Text("$price.00")
                         Text("0.00")
                         Text("300.00")
                         Text("280.00")
@@ -283,7 +283,7 @@ private fun TimeButton(time : Int) {
         shape = MaterialTheme.shapes.small,
         contentPadding = PaddingValues(horizontal = 2.dp)
     ) {
-        Text(text = "$time.00 - ${time+1}.00", fontSize = 22.sp, color = MaterialTheme.colorScheme.onSurface)
+        Text(text = "$time.00 - ${time+1}.00", fontSize = 20.sp, color = MaterialTheme.colorScheme.onSurface)
     }
 
 }

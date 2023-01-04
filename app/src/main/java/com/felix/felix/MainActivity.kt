@@ -36,68 +36,68 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        OrderModel("Refrigerator",1,"Cleaning",7500F,"2022-03-30","15:00:00")
+        //OrderModel("Refrigerator",1,"Cleaning",7500F,"2022-03-30","15:00:00")
 
         var services = ServiceModel()
         var categories = CategoryModel()
         var customer = CustomerModel("mayukhasiriwardena@gmail.com")
         val scope = CoroutineScope(Dispatchers.Main)
-        scope.launch {
-
-            //Load Services
-//             Log.i("TEST", services.LoadServices().getData().toString())
-
-            //Get all the Service Title by Category
-//            services.LoadServices().getServicesForCategory("4").forEach { service ->
-//              Log.i("Title for Cat:", service["title"].toString())
-//            }
-
-            //Get all the Services by Category
-            //            Log.i("Services for Category:",
-//                services.LoadServices().getServicesForCategory("4").toString()
-//            )
-
-            //To search for service by title
-//            Log.i(
-//                "Service by Title:",
-//                services.LoadServices().getServiceByTitle("Motorbike")?.entries.toString()
-//            )
-
-            //Sub-services and charges listed for service by title
-//            if (services.LoadServices().getServiceByTitle("Wall Painting")
-//                    ?.get("sub-services") == null
-//            ) {
-//                Log.i(
-//                    "Charges:",
-//                    services.LoadServices().getServiceByTitle("Wall Painting")?.get("charges")
-//                        .toString()
-//                )
-//                val charges = services.LoadServices().getServiceByTitle("Wall Painting")
-//                    ?.get("charges") as HashMap<String, *>
-//                charges.forEach { s, any ->
-//                    Log.i("$s", "$any")
-//                }
-//            } else {
-//                Log.i(
-//                    "Sub-Services:",
-//                    services.LoadServices().getServiceByTitle("Motorbike")?.get("sub-services")
-//                        .toString()
-//                )
-//                val subServices = services.LoadServices().getServiceByTitle("Motorbike")
-//                    ?.get("sub-services") as HashMap<String, *>
-//                subServices.forEach { s, any ->
-//                    Log.i("$s", "$any")
-//                }
-//            }
-
-            //Load all the category objects
-            //            Log.i("Categories: ",categories.LoadCategories().getData().toString())
-
-            services.LoadServices().getSubServicesFrontPage()
-//            Log.i("Sub-Services:",services.LoadServices().getSubServicesFrontPage().count().toString())
-//            Log.i("CUSTOMER DATA", customer.LoadCustomer().getData().toString())
-
-        }
+//        scope.launch {
+//
+//            //Load Services
+////             Log.i("TEST", services.LoadServices().getData().toString())
+//
+//            //Get all the Service Title by Category
+////            services.LoadServices().getServicesForCategory("4").forEach { service ->
+////              Log.i("Title for Cat:", service["title"].toString())
+////            }
+//
+//            //Get all the Services by Category
+//            //            Log.i("Services for Category:",
+////                services.LoadServices().getServicesForCategory("4").toString()
+////            )
+//
+//            //To search for service by title
+////            Log.i(
+////                "Service by Title:",
+////                services.LoadServices().getServiceByTitle("Motorbike")?.entries.toString()
+////            )
+//
+//            //Sub-services and charges listed for service by title
+////            if (services.LoadServices().getServiceByTitle("Wall Painting")
+////                    ?.get("sub-services") == null
+////            ) {
+////                Log.i(
+////                    "Charges:",
+////                    services.LoadServices().getServiceByTitle("Wall Painting")?.get("charges")
+////                        .toString()
+////                )
+////                val charges = services.LoadServices().getServiceByTitle("Wall Painting")
+////                    ?.get("charges") as HashMap<String, *>
+////                charges.forEach { s, any ->
+////                    Log.i("$s", "$any")
+////                }
+////            } else {
+////                Log.i(
+////                    "Sub-Services:",
+////                    services.LoadServices().getServiceByTitle("Motorbike")?.get("sub-services")
+////                        .toString()
+////                )
+////                val subServices = services.LoadServices().getServiceByTitle("Motorbike")
+////                    ?.get("sub-services") as HashMap<String, *>
+////                subServices.forEach { s, any ->
+////                    Log.i("$s", "$any")
+////                }
+////            }
+//
+//            //Load all the category objects
+//            //            Log.i("Categories: ",categories.LoadCategories().getData().toString())
+//
+////            services.getSubServicesFrontPage()
+////            Log.i("Sub-Services:",services.getSubServicesFrontPage().toString())
+////            Log.i("CUSTOMER DATA", customer.LoadCustomer().getData().toString())
+//
+//        }
         setContent {
             FelixTheme {
                 FelixApp()

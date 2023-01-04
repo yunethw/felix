@@ -24,11 +24,16 @@ import androidx.compose.ui.unit.dp
 import com.felix.felix.ui.components.CategoryCard
 import com.felix.felix.ui.components.ServiceCard
 import com.felix.felix.ui.theme.FelixTheme
+import org.json.JSONObject
 
 @ExperimentalMaterial3Api
 @Composable
 fun HomeScreen(
-    onServiceCardClick : () -> Unit = {}
+    onServiceCardClick: (HashMap<String, String>?) -> Unit = {},
+    subServiceList: List<HashMap<String, String>>?,
+    onCategoryCardClick : () -> Unit = {},
+    categoryList : List<Pair<String, String>>
+
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -52,11 +57,14 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(25.dp))
                 SectionTitle(text = "Categories", onSeeAllClick = {/*TODO: See more*/ })
                 Spacer(modifier = Modifier.height(15.dp))
-                CategoryRow()
+                CategoryRow(categoryList)
                 Spacer(modifier = Modifier.height(30.dp))
-                SectionTitle(text = "Special Offers", onSeeAllClick = {/*TODO: See more*/ })
+                SectionTitle(text = "Popular Services", onSeeAllClick = {/*TODO: See more*/ })
                 Spacer(modifier = Modifier.height(15.dp))
-                OfferColumn(onServiceCardClick)
+                OfferColumn(
+                    subServiceList = subServiceList,
+                    onServiceCardClick = onServiceCardClick
+                )
             }
         }
     }
@@ -183,15 +191,22 @@ fun SectionTitle(text: String, onSeeAllClick: (Int) -> Unit) {
 
 @ExperimentalMaterial3Api
 @Composable
-fun CategoryRow() {
-    val itemsList = (0..5).toList()
+fun CategoryRow(
+    categoryList: List<Pair<String, String>> = listOf(
+        Pair("",""), Pair("",""), Pair("",""), Pair("",""), Pair("",""), Pair("","")
+    )
+) {
 
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 25.dp)
     ) {
-        items(itemsList) {
-            CategoryCard()
+        items(if(categoryList.size < 6) categoryList else categoryList.subList(0, 6)) {pair ->
+            CategoryCard(
+                categoryName = pair.first,
+                categoryImageUrl = pair.second,
+                onClick = {}
+            )
         }
     }
 }
@@ -199,17 +214,24 @@ fun CategoryRow() {
 @ExperimentalMaterial3Api
 @Composable
 fun OfferColumn(
-    onServiceCardClick: () -> Unit
+    subServiceList: List<HashMap<String, String>>?,
+    onServiceCardClick: (HashMap<String, String>?) -> Unit
 ) {
-    for (i in 0..2) {
-        ServiceCard(
-            title = "Air Conditioner Repair",
-            price = "3000",
-            caption = "Hello Hello"
-        ) {
-            onServiceCardClick()
+    val subList = subServiceList?.subList(0, 3)
+
+    if (subList != null) {
+        for (item in subList) {
+            ServiceCard(
+                subService = item,
+                title = item["title"] ?: "",
+                price = item["price"] ?: "0.00",
+                caption = item["description"] ?: "",
+                imageUrl = item["imageUrl"] ?: ""
+            ) {
+                onServiceCardClick(it)
+            }
+            Spacer(modifier = Modifier.height(12.dp))
         }
-        Spacer(modifier = Modifier.height(12.dp))
     }
 }
 
@@ -218,6 +240,6 @@ fun OfferColumn(
 @Composable
 fun DefaultPreview() {
     FelixTheme {
-        HomeScreen()
+//        HomeScreen()
     }
 }
